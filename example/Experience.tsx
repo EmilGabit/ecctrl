@@ -55,7 +55,7 @@ export default function Experience() {
 
   return (
     <>
-      <Perf position="top-left" minimal />
+      {/* <Perf position="top-left" minimal /> */}
 
       <Grid
         args={[300, 300]}

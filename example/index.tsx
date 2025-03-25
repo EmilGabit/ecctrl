@@ -2,7 +2,7 @@ import "./style.css";
 import ReactDOM from "react-dom/client";
 import { Canvas } from "@react-three/fiber";
 import Experience from "../example/Experience";
-import { Leva } from "leva";
+// import { Leva } from "leva";
 import { EcctrlJoystick } from "../src/EcctrlJoystick";
 import { Suspense, useEffect, useState } from "react";
 import { Bvh } from "@react-three/drei";
@@ -29,7 +29,7 @@ const EcctrlJoystickControls = () => {
 
 root.render(
   <>
-    <Leva collapsed />
+    {/* <Leva collapsed /> */}
     <EcctrlJoystickControls />
     <Canvas
       shadows

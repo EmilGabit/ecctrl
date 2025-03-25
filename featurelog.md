@@ -4,7 +4,7 @@
 
 - The “FixedCamera” mode automatically rotates the camera as the character turns (similar to the controls in Coastal World). You can activate it with the following code:
 
-`<Ecctrl mode="FixedCamera">`
+<Ecctrl mode="FixedCamera">
 
 [![screenshot](example/EcctrlFixedCamera.png)]
 
