@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@react-spring/three": "^9.7.5",
+    "@twa-dev/sdk": "^8.0.2",
     "@types/three": "^0.170.0",
     "leva": "^0.9.35",
     "zustand": "^5.0.1"
