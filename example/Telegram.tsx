@@ -1,83 +1,57 @@
-import { useEffect, useState } from 'react';
-import { WebApp } from '@twa-dev/sdk';
+import { init, miniApp } from '@telegram-apps/sdk';
+import React from 'react';
 
-/**
- * Компонент для инициализации Telegram WebApp и отображения данных пользователя
- */
-export const TelegramInit = () => {
-  const [userData, setUserData] = useState(null);
+interface TelegramMiniAppDetectorProps {
+  // Можно добавить дополнительные пропсы при необходимости
+  fallback?: React.ReactNode; // Опциональный fallback UI
+}
 
-  useEffect(() => {
-    if (typeof WebApp !== 'undefined') {
-      WebApp.ready();
-      WebApp.expand();
-      
-      // Сохраняем данные пользователя в состоянии
-      if (WebApp.initDataUnsafe?.user) {
-        setUserData({
-          firstName: WebApp.initDataUnsafe.user.first_name,
-          lastName: WebApp.initDataUnsafe.user.last_name,
-          username: WebApp.initDataUnsafe.user.username,
-          userId: WebApp.initDataUnsafe.user.id,
-          languageCode: WebApp.initDataUnsafe.user.language_code,
-          isPremium: WebApp.initDataUnsafe.user.is_premium || false
-        });
+const TelegramMiniAppDetector: React.FC<TelegramMiniAppDetectorProps> = ({ 
+  fallback = <p>Это приложение работает только внутри Telegram Mini Apps.</p> 
+}) => {
+  const [isReady, setIsReady] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    try {
+      init();
+
+      if (miniApp.ready.isAvailable()) {
+        miniApp.ready();
+        setIsReady(true);
+        console.log('Mini App готово');
+      } else {
+        setError('Telegram Mini App не обнаружен');
       }
-    } 
+    } catch (err) {
+      console.error('Ошибка инициализации:', err);
+      setError('Ошибка при подключении к Telegram');
+    }
   }, []);
 
-  // Если это не Telegram Mini App - не рендерим ничего
-  if (typeof WebApp !== 'undefined') {
-
+  if (error) {
     return (
-            <div>
-            {userData ? (
-                <p>{userData.username}</p>
-            ) : (
-                <p>Данные пользователя не получены</p>
-            )}
-            </div>
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h2>Ошибка</h2>
+        {fallback}
+        <p><small>{error}</small></p>
+      </div>
     );
-  } else {
-    return(    
+  }
+
+  if (!isReady) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <p>Загрузка...</p>
+      </div>
+    );
+  }
+
+  return (
     <div>
-        <p>Хоть бы блять получилось</p>
-    </div>)
-  }  
+      <h1>Hello World</h1>
+    </div>
+  );
 };
 
-/**
- * Хук для проверки, запущено ли приложение в Telegram.
- * @returns {boolean} true, если это Mini App.
- */
-export const useTelegram = () => {
-  return typeof WebApp !== 'undefined';
-};
-
-/**
- * Хук для доступа к данным пользователя Telegram.
- * @returns {object | null} Данные пользователя или null.
- */
-export const useTelegramUser = () => {
-  return WebApp?.initDataUnsafe?.user || null;
-};
-
-// function TelegramInit(){
-//     return (
-//         <>
-//             <div>
-//                 <p>Хоть бы блять получилось</p>
-//             </div>
-//         </>
-//     );
-// }
-
-// export default TelegramInit;
-
-  {/* <h3>Добро пожаловать, {userData.firstName}!</h3> */}
-                
-                // <p><strong>Имя:</strong> {userData.firstName} {userData.lastName}</p>
-                
-                //     <p><strong>ID:</strong> {userData.userId}</p>
-                //     {userData.isPremium && <p>PREMIUM</p>}
-                
+export default TelegramMiniAppDetector;

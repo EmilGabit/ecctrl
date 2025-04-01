@@ -6,43 +6,42 @@ import Experience from "../example/Experience";
 import { EcctrlJoystick } from "../src/EcctrlJoystick";
 import { Suspense, useEffect, useState } from "react";
 import { Bvh } from "@react-three/drei";
-import { TelegramInit, useTelegram } from "./Telegram";
-// import TelegramInit from "./Telegram";
+import TelegramMiniAppDetector from "./Telegram";
 const root = ReactDOM.createRoot(document.querySelector("#root"));
 
-// const EcctrlJoystickControls = () => {
-//   const [isTouchScreen, setIsTouchScreen] = useState(false)
-//   useEffect(() => {
-//     // Check if using a touch control device, show/hide joystick
-//     if (('ontouchstart' in window) ||
-//       (navigator.maxTouchPoints > 0)) {
-//       setIsTouchScreen(true)
-//     } else {
-//       setIsTouchScreen(false)
-//     }
-//   }, [])
-//   return (
-//     <>
-//       {isTouchScreen && <EcctrlJoystick buttonNumber={5} />}
-//     </>
-//   )
-// }
-
 const EcctrlJoystickControls = () => {
-  const [isTouchScreen, setIsTouchScreen] = useState(false);
-  const isTelegram = useTelegram(); // Используем хук из модуля
-
+  const [isTouchScreen, setIsTouchScreen] = useState(false)
   useEffect(() => {
-    setIsTouchScreen(isTelegram || 'ontouchstart' in window || navigator.maxTouchPoints > 0);
-  }, [isTelegram]);
+    // Check if using a touch control device, show/hide joystick
+    if (('ontouchstart' in window) ||
+      (navigator.maxTouchPoints > 0)) {
+      setIsTouchScreen(true)
+    } else {
+      setIsTouchScreen(false)
+    }
+  }, [])
+  return (
+    <>
+      {isTouchScreen && <EcctrlJoystick buttonNumber={5} />}
+    </>
+  )
+}
 
-  return <>{isTouchScreen && <EcctrlJoystick buttonNumber={5} />}</>;
-};
+// const EcctrlJoystickControls = () => {
+//   const [isTouchScreen, setIsTouchScreen] = useState(false);
+//   const isTelegram = useTelegram(); // Используем хук из модуля
+
+//   useEffect(() => {
+//     setIsTouchScreen(isTelegram || 'ontouchstart' in window || navigator.maxTouchPoints > 0);
+//   }, [isTelegram]);
+
+//   return <>{isTouchScreen && <EcctrlJoystick buttonNumber={5} />}</>;
+// };
 
 
 root.render(
   <>
-    <TelegramInit />
+    <TelegramMiniAppDetector />
     {/* <Leva collapsed /> */}
     <EcctrlJoystickControls />
     <Canvas
